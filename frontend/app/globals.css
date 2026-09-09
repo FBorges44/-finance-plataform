@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f4f2ed;
+  --foreground: #10252a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), sans-serif;
+}
+
+button, a, input {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible, a:focus-visible, input:focus-visible {
+  outline: 3px solid #bef264;
+  outline-offset: 3px;
+}
+
+.surface-card {
+  border: 1px solid rgb(226 232 240 / 0.85);
+  border-radius: 1rem;
+  background: rgb(255 255 255 / 0.78);
+  box-shadow: 0 8px 28px rgb(16 37 42 / 0.045);
+}
+
+.eyebrow {
+  color: #758187;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.button-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  border-radius: 0.75rem;
+  background: #10252a;
+  padding: 0.7rem 1rem;
+  color: #d9f99d;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: transform 160ms ease, background 160ms ease;
+}
+
+.button-primary:hover {
+  background: #1d3d42;
+  transform: translateY(-1px);
+}
+
+.icon-button {
+  display: grid;
+  place-items: center;
+  border-radius: 0.75rem;
+  color: #64748b;
+  padding: 0.5rem;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.icon-button:hover {
+  background: rgb(226 232 240 / 0.65);
+  color: #10252a;
+}
+
+.select-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.7rem;
+  padding: 0.5rem 0.7rem;
+  color: #64748b;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.field {
+  width: 100%;
+  min-height: 2.7rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.7rem;
+  background: white;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.8rem;
+  color: #10252a;
+}
+
+.field::placeholder {
+  color: #94a3b8;
+}
