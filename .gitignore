@@ -1,0 +1,23 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Environment files
+.env
+.env.local
+.env.*
+!.env.example
+
+# Node and Next.js
+finance-plataform/frontend/node_modules/
+finance-plataform/frontend/.next/
+finance-plataform/frontend/out/
+finance-plataform/frontend/.vercel/
+finance-plataform/frontend/coverage/
+finance-plataform/frontend/*.tsbuildinfo
+
+# Local Git metadata backup
+finance-plataform/.git-history-backup/
