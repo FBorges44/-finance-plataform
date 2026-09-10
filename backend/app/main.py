@@ -4,10 +4,14 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
+from app.modules.accounts.router import router as accounts_router
+from app.modules.auth.router import router as auth_router
+from app.modules.dashboard.router import router as dashboard_router
+from app.modules.users.router import router as users_router
 
 
 app = FastAPI(
-    title="Finance Platform API",
+    title="Folio API",
     description="API da plataforma inteligente de gestão financeira pessoal.",
     version="0.1.0",
 )
@@ -21,6 +25,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(
+    users_router,
+    prefix="/api/v1",
+)
+app.include_router(auth_router, prefix="/api/v1")
+app.include_router(dashboard_router, prefix="/api/v1")
+app.include_router(accounts_router, prefix="/api/v1")
 
 
 @app.get("/health")

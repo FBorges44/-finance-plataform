@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    app_name: str = "Finance Platform API"
+    app_name: str = "Folio API"
     app_version: str = "0.1.0"
     environment: str = "development"
 
@@ -13,6 +13,9 @@ class Settings(BaseSettings):
     )
 
     redis_url: str = "redis://localhost:6379/0"
+
+    jwt_secret_key: str = "CHANGE_THIS_IN_PRODUCTION_USE_A_LONG_SECRET"
+    access_token_expire_minutes: int = 30
 
     model_config = SettingsConfigDict(
         env_file=".env",

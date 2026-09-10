@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f4f2ed;
-  --foreground: #10252a;
+  --background: #f5f5f5;
+  --foreground: #111111;
 }
 
 @theme inline {
@@ -23,7 +23,7 @@ button, a, input {
 }
 
 button:focus-visible, a:focus-visible, input:focus-visible {
-  outline: 3px solid #bef264;
+  outline: 3px solid #111111;
   outline-offset: 3px;
 }
 
@@ -31,7 +31,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   border: 1px solid rgb(226 232 240 / 0.85);
   border-radius: 1rem;
   background: rgb(255 255 255 / 0.78);
-  box-shadow: 0 8px 28px rgb(16 37 42 / 0.045);
+  box-shadow: 0 8px 28px rgb(0 0 0 / 0.045);
 }
 
 .eyebrow {
@@ -50,16 +50,16 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   gap: 0.5rem;
   min-height: 2.75rem;
   border-radius: 0.75rem;
-  background: #10252a;
+  background: #111111;
   padding: 0.7rem 1rem;
-  color: #d9f99d;
+  color: #ffffff;
   font-size: 0.75rem;
   font-weight: 700;
   transition: transform 160ms ease, background 160ms ease;
 }
 
 .button-primary:hover {
-  background: #1d3d42;
+  background: #333333;
   transform: translateY(-1px);
 }
 
@@ -74,7 +74,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .icon-button:hover {
   background: rgb(226 232 240 / 0.65);
-  color: #10252a;
+  color: #111111;
 }
 
 .select-button {
