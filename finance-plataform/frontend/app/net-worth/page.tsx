@@ -1,4 +1,4 @@
 import { AppShell } from "@/components/layout/AppShell";
-import { SectionView } from "@/components/layout/SectionView";
+import { PlanningPage } from "@/features/planning/planning-page";
 
-export default function NetWorthPage() { return <AppShell><SectionView path="/net-worth" /></AppShell>; }
+export default function NetWorthPage() { return <AppShell><PlanningPage mode="net-worth" /></AppShell>; }

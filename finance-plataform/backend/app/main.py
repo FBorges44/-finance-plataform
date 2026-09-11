@@ -7,6 +7,8 @@ from app.core.database import get_db
 from app.modules.accounts.router import router as accounts_router
 from app.modules.auth.router import router as auth_router
 from app.modules.dashboard.router import router as dashboard_router
+from app.modules.transactions.router import router as transactions_router
+from app.modules.planning.router import router as planning_router
 from app.modules.users.router import router as users_router
 
 
@@ -33,6 +35,8 @@ app.include_router(
 app.include_router(auth_router, prefix="/api/v1")
 app.include_router(dashboard_router, prefix="/api/v1")
 app.include_router(accounts_router, prefix="/api/v1")
+app.include_router(transactions_router, prefix="/api/v1")
+app.include_router(planning_router, prefix="/api/v1")
 
 
 @app.get("/health")

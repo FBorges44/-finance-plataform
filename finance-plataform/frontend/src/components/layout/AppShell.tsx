@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Bell, ChevronDown, Menu, Plus, Search, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   mobileNavigation,
@@ -11,6 +11,7 @@ import {
   primaryNavigation,
   secondaryNavigation,
 } from "@/lib/navigation";
+import { getCurrentUser } from "@/lib/api";
 
 function NavItem({
   label,
@@ -44,9 +45,27 @@ function NavItem({
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [sessionReady, setSessionReady] = useState(false);
   const meta = pageMeta[pathname];
   const isDashboard = pathname === "/" || pathname === "/dashboard";
+
+  useEffect(() => {
+    const token = localStorage.getItem("folio_access_token");
+    if (!token) {
+      router.replace("/login");
+      return;
+    }
+    getCurrentUser(token)
+      .then(() => setSessionReady(true))
+      .catch(() => {
+        localStorage.removeItem("folio_access_token");
+        router.replace("/login");
+      });
+  }, [router]);
+
+  if (!sessionReady) return <div className="grid min-h-screen place-items-center bg-[#f5f5f5] text-sm text-slate-500">Validando sua sessão...</div>;
 
   return (
     <div className="min-h-screen bg-[#f5f5f5] text-slate-950 grayscale">
@@ -131,7 +150,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         })}
       </nav>
 
-      <button className="fixed bottom-24 right-5 z-20 grid size-12 place-items-center rounded-2xl bg-slate-950 text-white shadow-lg transition-transform hover:-translate-y-1 lg:bottom-8 lg:right-8" aria-label="Adicionar item"><Plus size={21} /></button>
+      <button className="fixed bottom-24 right-5 z-20 grid size-12 place-items-center rounded-2xl bg-slate-950 text-white shadow-lg transition-transform hover:-translate-y-1 lg:bottom-8 lg:right-8" onClick={() => router.push("/transactions")} aria-label="Adicionar receita ou despesa" title="Adicionar receita ou despesa"><Plus size={21} /></button>
     </div>
   );
 }

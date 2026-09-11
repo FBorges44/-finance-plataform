@@ -1,3 +1,4 @@
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -14,8 +15,8 @@ class Settings(BaseSettings):
 
     redis_url: str = "redis://localhost:6379/0"
 
-    jwt_secret_key: str = "CHANGE_THIS_IN_PRODUCTION_USE_A_LONG_SECRET"
-    access_token_expire_minutes: int = 30
+    jwt_secret_key: str = Field(min_length=32)
+    access_token_expire_minutes: int = 60 * 24 * 7
 
     model_config = SettingsConfigDict(
         env_file=".env",

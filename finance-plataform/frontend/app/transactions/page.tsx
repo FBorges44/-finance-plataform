@@ -1,4 +1,4 @@
 import { AppShell } from "@/components/layout/AppShell";
-import { SectionView } from "@/components/layout/SectionView";
+import { TransactionsPage } from "@/features/transactions/transactions-page";
 
-export default function TransactionsPage() { return <AppShell><SectionView path="/transactions" /></AppShell>; }
+export default function Page() { return <AppShell><TransactionsPage /></AppShell>; }

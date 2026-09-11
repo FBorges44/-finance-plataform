@@ -14,3 +14,11 @@ async def create_account(db: AsyncSession, user: User, data: AccountCreate) -> A
     return await repository.create_account(
         db, user.id, data.name, data.institution, data.account_type, data.initial_balance
     )
+
+
+async def update_account(db: AsyncSession, user: User, account_id, data):
+    return await repository.update_account(db, user.id, account_id, data)
+
+
+async def delete_account(db: AsyncSession, user: User, account_id) -> None:
+    await repository.delete_account(db, user.id, account_id)

@@ -9,6 +9,8 @@ from app.core.config import settings
 from app.core.models import Base
 from app.modules.users.models import User
 from app.modules.accounts.models import Account
+from app.modules.transactions.models import Category, Transaction
+from app.modules.planning.models import Goal, Budget, Investment
 
 
 config = context.config

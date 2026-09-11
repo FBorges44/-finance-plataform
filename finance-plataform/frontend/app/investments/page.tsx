@@ -1,4 +1,4 @@
 import { AppShell } from "@/components/layout/AppShell";
-import { SectionView } from "@/components/layout/SectionView";
+import { PlanningPage } from "@/features/planning/planning-page";
 
-export default function InvestmentsPage() { return <AppShell><SectionView path="/investments" /></AppShell>; }
+export default function InvestmentsPage() { return <AppShell><PlanningPage mode="investments" /></AppShell>; }

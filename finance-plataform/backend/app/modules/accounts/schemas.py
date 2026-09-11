@@ -21,3 +21,9 @@ class AccountResponse(BaseModel):
     account_type: str
     balance: Decimal
     created_at: datetime
+
+
+class AccountUpdate(BaseModel):
+    name: str = Field(min_length=1, max_length=120)
+    institution: str = Field(min_length=1, max_length=120)
+    account_type: str = Field(min_length=1, max_length=40)

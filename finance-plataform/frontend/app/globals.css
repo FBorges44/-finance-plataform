@@ -103,3 +103,72 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .field::placeholder {
   color: #94a3b8;
 }
+
+.folio-splash {
+  display: grid;
+  min-height: 100vh;
+  place-content: center;
+  justify-items: center;
+  gap: 0.8rem;
+  background: #10252a;
+  color: white;
+  text-align: center;
+}
+
+.folio-splash-mark {
+  display: grid;
+  width: 4.5rem;
+  height: 4.5rem;
+  place-items: center;
+  border-radius: 1.4rem;
+  background: #d9f99d;
+  color: #10252a;
+  font-size: 2rem;
+  font-weight: 900;
+  animation: folio-mark-in 700ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+.folio-splash h1 {
+  margin: 0;
+  font-size: clamp(2.2rem, 7vw, 4.8rem);
+  letter-spacing: -0.06em;
+  animation: folio-title-in 800ms 160ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+.folio-splash h1 em {
+  color: #bef264;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.folio-splash p {
+  margin: 0;
+  color: #9ca3af;
+  font-size: 0.8rem;
+  animation: folio-title-in 800ms 300ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+.folio-splash-error {
+  max-width: 22rem;
+  margin-top: 1.5rem;
+  color: #fecaca;
+  font-size: 0.8rem;
+}
+
+.folio-splash-error button {
+  display: block;
+  margin: 0.8rem auto 0;
+  border-bottom: 1px solid #bef264;
+  color: #bef264;
+  font-weight: 700;
+}
+
+@keyframes folio-mark-in {
+  from { opacity: 0; transform: scale(0.65) rotate(-8deg); }
+  to { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+@keyframes folio-title-in {
+  from { opacity: 0; transform: translateY(0.7rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
