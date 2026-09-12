@@ -14,14 +14,14 @@ export default function AccountsPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("folio_access_token");
+    const token = localStorage.getItem("folio_session_ready");
     if (!token) return;
     getAccounts(token).then(setAccounts).catch(() => setError("Não foi possível carregar suas contas."));
   }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const token = localStorage.getItem("folio_access_token");
+    const token = localStorage.getItem("folio_session_ready");
     if (!token) return setError("Faça login para cadastrar uma conta.");
     const balance = Number(form.initialBalance.replace(",", "."));
     if (!editingId && !Number.isFinite(balance)) return setError("Informe um saldo inicial válido.");
@@ -48,7 +48,7 @@ export default function AccountsPage() {
   }
 
   async function handleDelete(id: string) {
-    const token = localStorage.getItem("folio_access_token");
+    const token = localStorage.getItem("folio_session_ready");
     if (!token || !window.confirm("Excluir esta conta? As transações serão preservadas.")) return;
     try { await deleteAccount(token, id); setAccounts((current) => current.filter((account) => account.id !== id)); } catch { setError("Não foi possível excluir a conta."); }
   }

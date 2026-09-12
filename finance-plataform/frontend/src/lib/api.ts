@@ -1,21 +1,28 @@
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+const API_URL = (
+  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"
+).replace(/\/$/, "");
 
 export async function apiFetch<T>(
   endpoint: string,
   options?: RequestInit,
 ): Promise<T> {
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options?.headers,
-    },
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${API_URL}${endpoint}`, {
+      ...options,
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+      },
+    });
+  } catch {
+    throw new Error("Não foi possível conectar à API. Verifique a configuração do deploy.");
+  }
 
   if (!response.ok) {
     if (response.status === 401 && typeof window !== "undefined") {
-      localStorage.removeItem("folio_access_token");
+      localStorage.removeItem("folio_session_ready");
     }
     let message = `API error: ${response.status}`;
     try {
@@ -28,12 +35,12 @@ export async function apiFetch<T>(
     throw new Error(message);
   }
 
+  if (response.status === 204) return undefined as T;
   return response.json();
 }
 
 export type AuthResponse = {
-  access_token: string;
-  token_type: string;
+  authenticated: boolean;
 };
 
 export type CurrentUser = {
@@ -80,6 +87,24 @@ export function login(email: string, password: string) {
     method: "POST",
     body: JSON.stringify({ email, password }),
   });
+}
+
+export function requestPasswordReset(email: string) {
+  return apiFetch<{ detail: string }>("/api/v1/auth/password-reset/request", {
+    method: "POST",
+    body: JSON.stringify({ email }),
+  });
+}
+
+export function resetPassword(token: string, password: string) {
+  return apiFetch<void>("/api/v1/auth/password-reset/confirm", {
+    method: "POST",
+    body: JSON.stringify({ token, password }),
+  });
+}
+
+export function logout() {
+  return apiFetch<void>("/api/v1/auth/logout", { method: "POST" });
 }
 
 export function createDemoSession() {

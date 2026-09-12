@@ -24,7 +24,7 @@ export function DashboardPage() {
 
   useEffect(() => {
     queueMicrotask(() => {
-      const token = localStorage.getItem("folio_access_token");
+      const token = localStorage.getItem("folio_session_ready");
       if (!token) {
         setError("Faça login para visualizar seu dashboard.");
         setIsLoading(false);

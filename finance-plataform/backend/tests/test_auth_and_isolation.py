@@ -1,4 +1,4 @@
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, MagicMock
 from uuid import uuid4
 
 import jwt
@@ -28,7 +28,7 @@ def test_invalid_access_token_is_rejected():
 @pytest.mark.asyncio
 async def test_account_query_is_scoped_to_user():
     db = AsyncMock()
-    result = AsyncMock()
+    result = MagicMock()
     result.scalars.return_value.all.return_value = []
     db.execute.return_value = result
     user_id = uuid4()

@@ -20,6 +20,13 @@ async def get_user_by_id(db: AsyncSession, user_id: UUID) -> User | None:
 	return result.scalar_one_or_none()
 
 
+async def get_user_by_reset_token_hash(db: AsyncSession, token_hash: str) -> User | None:
+	result = await db.execute(
+		select(User).where(User.password_reset_token_hash == token_hash, User.deleted_at.is_(None))
+	)
+	return result.scalar_one_or_none()
+
+
 async def create_user(
 	db: AsyncSession,
 	email: str,

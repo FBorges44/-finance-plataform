@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { getCurrentUser, login, register } from "@/lib/api";
+import { getCurrentUser, login, register, requestPasswordReset, resetPassword } from "@/lib/api";
 
 type AuthMode = "login" | "register" | "forgot" | "reset";
 
@@ -23,20 +23,53 @@ export function AuthView({ mode }: { mode: AuthMode }) {
   const [showPassword, setShowPassword] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (mode !== "login" && mode !== "register") return;
-    const token = localStorage.getItem("folio_access_token");
+    const token = localStorage.getItem("folio_session_ready");
     if (!token) return;
 
     getCurrentUser(token)
       .then(() => router.replace("/dashboard"))
-      .catch(() => localStorage.removeItem("folio_access_token"));
+      .catch(() => localStorage.removeItem("folio_session_ready"));
   }, [mode, router]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (mode === "forgot") {
+      setError("");
+      setMessage("");
+      setIsSubmitting(true);
+      try {
+        await requestPasswordReset(email);
+        setMessage("Se houver uma conta para este e-mail, enviaremos as instruções de recuperação.");
+      } catch {
+        setError("Não foi possível solicitar a recuperação.");
+      } finally {
+        setIsSubmitting(false);
+      }
+      return;
+    }
+    if (mode === "reset") {
+      const token = new URLSearchParams(window.location.search).get("token");
+      if (!token) {
+        setError("Link de recuperação inválido ou expirado.");
+        return;
+      }
+      setError("");
+      setIsSubmitting(true);
+      try {
+        await resetPassword(token, password);
+        router.replace("/login");
+      } catch (caughtError) {
+        setError(caughtError instanceof Error ? caughtError.message : "Não foi possível redefinir a senha.");
+      } finally {
+        setIsSubmitting(false);
+      }
+      return;
+    }
     if (mode !== "login" && mode !== "register") {
       setError("Essa etapa ainda não está disponível.");
       return;
@@ -45,8 +78,8 @@ export function AuthView({ mode }: { mode: AuthMode }) {
     setIsSubmitting(true);
     try {
       if (mode === "register") await register(email, password);
-      const response = await login(email, password);
-      localStorage.setItem("folio_access_token", response.access_token);
+      await login(email, password);
+      localStorage.setItem("folio_session_ready", "true");
       router.replace("/dashboard");
     } catch (caughtError) {
       const message = caughtError instanceof Error ? caughtError.message : "";
@@ -62,7 +95,7 @@ export function AuthView({ mode }: { mode: AuthMode }) {
     }
   }
 
-  const isAuthForm = mode === "login" || mode === "register";
+  const isAuthForm = true;
   return <main className="grid min-h-screen bg-white lg:grid-cols-[0.82fr_1.18fr]">
     <section className="hidden bg-slate-950 p-10 text-white lg:flex lg:flex-col lg:justify-between"><Link href="/" className="flex items-center gap-3"><span className="grid size-9 place-items-center rounded-xl bg-white font-black text-slate-950">F</span><span className="font-bold tracking-tight">Folio</span></Link><div className="max-w-md"><p className="eyebrow text-slate-400">Finanças com presença</p><h1 className="mt-4 text-5xl font-bold leading-[1.05] tracking-[-0.05em]">Clareza para o dinheiro que move sua vida.</h1><p className="mt-6 text-sm leading-7 text-slate-400">Um lugar para olhar suas escolhas com mais contexto, menos ruído e bastante autonomia.</p></div><p className="text-xs text-slate-500">Privacidade desde o primeiro passo.</p></section>
     <section className="flex min-h-screen items-center justify-center px-5 py-12 sm:px-10"><div className="w-full max-w-md"><div className="mb-10 lg:hidden"><Link href="/" className="flex items-center gap-3 font-bold"><span className="grid size-9 place-items-center rounded-xl bg-slate-950 text-white">F</span> Folio</Link></div><div className="mb-8"><p className="eyebrow">Conta pessoal</p><h2 className="mt-3 text-3xl font-bold tracking-[-0.04em]">{copy[mode].title}</h2><p className="mt-2 text-sm text-slate-500">{copy[mode].description}</p></div>

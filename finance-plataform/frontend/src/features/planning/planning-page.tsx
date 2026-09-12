@@ -16,7 +16,7 @@ export function PlanningPage({ mode }: { mode: Mode }) {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("folio_access_token");
+    const token = localStorage.getItem("folio_session_ready");
     if (!token) { queueMicrotask(() => setError("Faça login para continuar.")); return; }
     const request = mode === "goals" ? getGoals(token).then(setGoals) : mode === "budgets" ? getBudgets(token).then(setBudgets) : mode === "investments" ? getInvestments(token).then(setInvestments) : getReport(token).then(setReport);
     request.catch(() => setError("Não foi possível carregar os dados."));
@@ -24,7 +24,7 @@ export function PlanningPage({ mode }: { mode: Mode }) {
 
   async function submit(event: FormEvent) {
     event.preventDefault();
-    const token = localStorage.getItem("folio_access_token");
+    const token = localStorage.getItem("folio_session_ready");
     if (!token) return;
     setSaving(true); setError("");
     try {

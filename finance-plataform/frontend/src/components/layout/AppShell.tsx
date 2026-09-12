@@ -52,7 +52,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const isDashboard = pathname === "/" || pathname === "/dashboard";
 
   useEffect(() => {
-    const token = localStorage.getItem("folio_access_token");
+    const token = localStorage.getItem("folio_session_ready");
     if (!token) {
       router.replace("/login");
       return;
@@ -60,7 +60,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     getCurrentUser(token)
       .then(() => setSessionReady(true))
       .catch(() => {
-        localStorage.removeItem("folio_access_token");
+        localStorage.removeItem("folio_session_ready");
         router.replace("/login");
       });
   }, [router]);

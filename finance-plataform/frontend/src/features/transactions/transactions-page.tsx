@@ -25,7 +25,7 @@ export function TransactionsPage() {
   });
 
   useEffect(() => {
-    const token = localStorage.getItem("folio_access_token");
+    const token = localStorage.getItem("folio_session_ready");
     if (!token) {
       queueMicrotask(() => {
         setError("Faça login para visualizar suas transações.");
@@ -47,7 +47,7 @@ export function TransactionsPage() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const token = localStorage.getItem("folio_access_token");
+    const token = localStorage.getItem("folio_session_ready");
     if (!token || !form.account_id) return;
 
     const amount = Number(form.amount.replace(",", "."));
@@ -75,7 +75,7 @@ export function TransactionsPage() {
   }
 
   async function handleDelete(id: string) {
-    const token = localStorage.getItem("folio_access_token");
+    const token = localStorage.getItem("folio_session_ready");
     if (!token || !window.confirm("Excluir esta transação?")) return;
     try {
       await deleteTransaction(token, id);
@@ -91,7 +91,7 @@ export function TransactionsPage() {
   }
 
   async function handleCreateCategory() {
-    const token = localStorage.getItem("folio_access_token");
+    const token = localStorage.getItem("folio_session_ready");
     const name = window.prompt("Nome da nova categoria");
     if (!token || !name?.trim()) return;
     try {
